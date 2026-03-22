@@ -1,3 +1,7 @@
+# Credit Card Fraud Detection EDA and Modeling
+
+# 1. Import Libraries and Setup
+
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt 
@@ -9,20 +13,20 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, classification_report
  
 
-# import warnings
 
 
-# warnings.filterwarnings('ignore')
 
-# Load the dataset
+# 2. Load the dataset and data exploration
 df = pd.read_csv(r"C:\Users\sogot\OneDrive\Desktop\creditcard fraud\creditcard.csv")
 print(df.head())
-# Check for missing values
+
 print(df.columns)
 print(df.describe())
 print(df.info())
 print(df['Class'].value_counts())
 
+
+# 3. Data Visualization: Fraud Distribution and Amount
 sns.countplot(x='Class', data=df)
 plt.title('Distribution of Fraudulent and Non-Fraudulent Transactions')
 plt.xlabel('Class (0: Non-Fraudulent, 1: Fraudulent)')
@@ -41,6 +45,7 @@ plt.xlabel('Time')
 plt.ylabel('Count')
 plt.show()
 
+# 4. Scatter and Sample Plots: Fraud vs Non-Fraud
 fraud=df[df['Class'] == 1]
 non_fraud=df[df['Class'] == 0]
 plt.figure(figsize=(10,6))
@@ -61,6 +66,7 @@ plt.title('Scatter Plot of Time vs Amount for Fraudulent and Sampled Non-Fraudul
 plt.legend()
 plt.show()
 
+# 5. Correlation and KDE Plots
 plt.figure(figsize=(10,6))
 sns.heatmap(df.corr(), annot=True, cmap='coolwarm', fmt='.2f')
 plt.title('Correlation Matrix')
@@ -75,7 +81,7 @@ plt.title('Kernel Density Estimation of Amount for Fraudulent and Non-Fraudulent
 plt.legend()
 plt.show()
 
-
+# 6. Train-Test Split and Logistic Regression Model
 x=df.drop('Class', axis=1)
 y=df['Class']
 
@@ -102,7 +108,7 @@ print("y_train shape:", y_train.shape)
 print("X_test shape:", x_test.shape)
 print("y_test shape:", y_test.shape)   
 
-
+# 7. XGBoost Model and ROC Curve Comparison
 scale= len(y_train[y_train==1])/len(y_train)
 
 xgb = XGBClassifier(
